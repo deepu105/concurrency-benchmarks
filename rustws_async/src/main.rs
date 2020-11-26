@@ -34,7 +34,7 @@ async fn handle_connection(mut stream: Async<TcpStream>, count: Box<i64>) {
     let (status_line, filename) = if buffer.starts_with(get) {
         if (*count % 10) == 0 {
             println!("Adding delay. Count: {}", count);
-            thread::sleep(Duration::from_secs(2));
+            smol::Timer::after(Duration::from_secs(2)).await;
         }
         ("HTTP/1.0 200 OK\r\n\r\n", "hello.html")
     } else {

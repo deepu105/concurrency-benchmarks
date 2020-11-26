@@ -14,7 +14,7 @@ func helloWorld(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	runtime.GOMAXPROCS(1) // limit max threads used by goroutines
+	runtime.GOMAXPROCS(8) // limit max threads used by goroutines
 	var count = 0
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		defer r.Body.Close()
