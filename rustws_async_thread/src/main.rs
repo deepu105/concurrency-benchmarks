@@ -5,15 +5,12 @@ use std::net::TcpStream;
 use std::thread;
 use std::time::Duration;
 extern crate futures;
-use futures::executor::ThreadPoolBuilder;
+use futures::executor::ThreadPool;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
 
-    let mut pool_config = ThreadPoolBuilder::new();
-    pool_config.pool_size(8);
-    let pool = pool_config.create().expect("couldn't create threadpool");
-
+    let pool = ThreadPool::new().expect("couldn't create threadpool");
     let mut count = 0;
 
     for stream in listener.incoming() {
