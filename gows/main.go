@@ -8,24 +8,20 @@ import (
 	"time"
 )
 
-func helloWorld(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello world!") // send data to client side
-}
-
 func main() {
-	// runtime.GOMAXPROCS(8) // limit max threads used by goroutines
 	var count = 0
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { // set router
 		defer r.Body.Close()
 		count++
+		// add 2 second delay to every 10th request
 		if (count % 10) == 0 {
 			println("Adding delay. Count: ", count)
 			time.Sleep(2 * time.Second)
 		}
-		html, _ := ioutil.ReadFile("hello.html")
-		w.WriteHeader(200)
-		fmt.Fprintf(w, string(html)) // send data to client side
-	}) // set router
+		html, _ := ioutil.ReadFile("hello.html") // read html file
+		w.WriteHeader(200)                       // 200 OK
+		fmt.Fprintf(w, string(html))             // send data to client side
+	})
 	err := http.ListenAndServe(":8080", nil) // set listen port
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)

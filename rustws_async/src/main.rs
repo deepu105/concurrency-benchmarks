@@ -2,7 +2,6 @@ use async_std::net::TcpListener;
 use async_std::net::TcpStream;
 use async_std::prelude::*;
 use async_std::task;
-use async_std::task::spawn;
 use std::fs;
 use std::time::Duration;
 
@@ -11,13 +10,14 @@ async fn main() {
     let mut count = 0;
 
     task::block_on(async {
-        let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
+        let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap(); // set listen port
 
         loop {
             count = count + 1;
             let count_n = Box::new(count);
             let (stream, _) = listener.accept().await.unwrap();
-            spawn(handle_connection(stream, count_n));
+            stream.set_nodelay(true).expect("set_nodelay call failed");
+            task::spawn(handle_connection(stream, count_n)); // spawn a new task to handle the connection
         }
     })
 }
@@ -27,15 +27,15 @@ async fn handle_connection(mut stream: TcpStream, count: Box<i64>) {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).await.unwrap();
 
+    // add 2 second delay to every 10th request
     if (*count % 10) == 0 {
         println!("Adding delay. Count: {}", count);
         task::sleep(Duration::from_secs(2)).await;
     }
 
-    let (status_line, filename) = ("HTTP/1.1 200 OK\r\n\r\n", "hello.html");
-    let contents = fs::read_to_string(filename).unwrap();
+    let contents = fs::read_to_string("hello.html").unwrap(); // read html file
 
-    let response = format!("{}{}", status_line, contents);
-    stream.write(response.as_bytes()).await.unwrap();
+    let response = format!("{}{}", "HTTP/1.1 200 OK\r\n\r\n", contents);
+    stream.write(response.as_bytes()).await.unwrap(); // write response
     stream.flush().await.unwrap();
 }
