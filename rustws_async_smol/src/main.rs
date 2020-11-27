@@ -1,7 +1,6 @@
 use std::fs;
 use std::net::TcpListener;
 use std::net::TcpStream;
-use std::thread;
 use std::time::Duration;
 
 extern crate smol;
