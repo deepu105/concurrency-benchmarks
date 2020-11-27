@@ -9,17 +9,14 @@ use std::time::Duration;
 async fn main() {
     let mut count = 0;
 
-    task::block_on(async {
-        let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap(); // set listen port
+    let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap(); // set listen port
 
-        loop {
-            count = count + 1;
-            let count_n = Box::new(count);
-            let (stream, _) = listener.accept().await.unwrap();
-            stream.set_nodelay(true).expect("set_nodelay call failed");
-            task::spawn(handle_connection(stream, count_n)); // spawn a new task to handle the connection
-        }
-    })
+    loop {
+        count = count + 1;
+        let count_n = Box::new(count);
+        let (stream, _) = listener.accept().await.unwrap();
+        task::spawn(handle_connection(stream, count_n)); // spawn a new task to handle the connection
+    }
 }
 
 async fn handle_connection(mut stream: TcpStream, count: Box<i64>) {
