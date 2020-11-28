@@ -24,6 +24,7 @@ const requestListener = async function (req, res, count) {
     await sleep(2000);
   }
   const contents = await fs.readFile(__dirname + "/hello.html"); // read html file
+  res.setHeader("Connection", "keep-alive");
   res.writeHead(200); // 200 OK
   res.end(contents); // send data to client side
 };

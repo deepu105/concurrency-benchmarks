@@ -30,6 +30,7 @@ func handleConnection(w http.ResponseWriter, count int) {
 		time.Sleep(2 * time.Second)
 	}
 	html, _ := ioutil.ReadFile("hello.html") // read html file
-	w.WriteHeader(200)                       // 200 OK
-	fmt.Fprintf(w, string(html))             // send data to client side
+	w.Header().Set("Connection", "keep-alive")
+	w.WriteHeader(200)           // 200 OK
+	fmt.Fprintf(w, string(html)) // send data to client side
 }

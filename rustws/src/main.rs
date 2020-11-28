@@ -30,10 +30,10 @@ fn handle_connection(mut stream: TcpStream, count: i64) {
         thread::sleep(Duration::from_secs(2));
     }
 
-    let (status_line, filename) = ("HTTP/1.1 200 OK\r\n\r\n", "hello.html");
-    let contents = fs::read_to_string(filename).unwrap();
+    let (status_line, header) = ("HTTP/1.1 200 OK", "Connection: keep-alive");
+    let contents = fs::read_to_string("hello.html").unwrap();
 
-    let response = format!("{}{}", status_line, contents);
+    let response = format!("{}\r\n{}\r\n\r\n{}", status_line, header, contents);
 
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
