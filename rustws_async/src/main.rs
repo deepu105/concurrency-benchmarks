@@ -13,8 +13,10 @@ async fn main() {
 
     loop {
         count = count + 1;
+        // Listen for an incoming connection.
         let (stream, _) = listener.accept().await.unwrap();
-        task::spawn(handle_connection(stream, count)); // spawn a new task to handle the connection
+        // spawn a new task to handle the connection
+        task::spawn(handle_connection(stream, count));
     }
 }
 
