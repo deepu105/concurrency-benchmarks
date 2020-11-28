@@ -1,5 +1,5 @@
 [package]
-name = "rustws_async_tinyhttp"
+name = "rustws_async_hyper"
 version = "0.1.0"
 authors = ["deepu105 <d4udts@gmail.com>"]
 edition = "2018"
