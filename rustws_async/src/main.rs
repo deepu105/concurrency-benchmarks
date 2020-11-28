@@ -13,19 +13,18 @@ async fn main() {
 
     loop {
         count = count + 1;
-        let count_n = Box::new(count);
         let (stream, _) = listener.accept().await.unwrap();
-        task::spawn(handle_connection(stream, count_n)); // spawn a new task to handle the connection
+        task::spawn(handle_connection(stream, count)); // spawn a new task to handle the connection
     }
 }
 
-async fn handle_connection(mut stream: TcpStream, count: Box<i64>) {
+async fn handle_connection(mut stream: TcpStream, count: i64) {
     // Read the first 1024 bytes of data from the stream
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).await.unwrap();
 
     // add 2 second delay to every 10th request
-    if (*count % 10) == 0 {
+    if (count % 10) == 0 {
         println!("Adding delay. Count: {}", count);
         task::sleep(Duration::from_secs(2)).await;
     }

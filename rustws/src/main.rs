@@ -15,18 +15,17 @@ fn main() {
     for stream in listener.incoming() {
         let stream = stream.unwrap();
         count = count + 1;
-        let count_n = Box::new(count);
-        pool.execute(|| {
-            handle_connection(stream, count_n);
+        pool.execute(move || {
+            handle_connection(stream, count);
         });
     }
 }
 
-fn handle_connection(mut stream: TcpStream, count: Box<i64>) {
+fn handle_connection(mut stream: TcpStream, count: i64) {
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
 
-    if (*count % 10) == 0 {
+    if (count % 10) == 0 {
         println!("Adding delay. Count: {}", count);
         thread::sleep(Duration::from_secs(2));
     }
