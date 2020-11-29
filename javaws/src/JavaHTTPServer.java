@@ -43,15 +43,18 @@ public class JavaHTTPServer implements Runnable {
             // add 2 second delay to every 10th request
             if (count % 10 == 0) {
                 System.out.println("Adding delay. Count: " + count);
-//                Thread.sleep(2000);
+                Thread.sleep(2000);
             }
             var fileLength = (int) file.length();
             var fileData = new byte[fileLength];
             fileIn.read(fileData);
 
+            String contentMimeType = "text/html";
             // send HTTP Headers
             out.println("HTTP/1.1 200 OK");
             out.println("Connection: keep-alive");
+            out.println("Content-type: " + contentMimeType);
+            out.println("Content-length: " + fileLength);
             out.println(); // blank line between headers and content, very important !
             out.flush(); // flush character output stream buffer
 
