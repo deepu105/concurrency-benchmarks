@@ -45,6 +45,12 @@ func handleConnection(conn net.Conn, count int) {
 	}
 	html, _ := ioutil.ReadFile("hello.html") // read html file
 	// Send a response back
-	res := fmt.Sprintf("%s\r\n%s\r\n\r\n%s", "HTTP/1.1 200 OK", "Connection: keep-alive", string(html))
+	header := `
+HTTP/1.0 200 OK
+Connection: keep-alive
+Content-Length: 174
+Content-Type: text/html; charset=utf-8
+	`
+	res := fmt.Sprintf("%s\r\n\r\n%s", header, string(html))
 	conn.Write([]byte(res))
 }
