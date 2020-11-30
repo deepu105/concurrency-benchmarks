@@ -8,7 +8,7 @@ use std::time::Duration;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:8080").unwrap();
-    let pool = ThreadPool::new(100);
+    let pool = ThreadPool::new(100); // same number as max concurrent requests
 
     let mut count = 0;
 

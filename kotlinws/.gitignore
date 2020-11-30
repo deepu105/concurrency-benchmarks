@@ -1,0 +1,7 @@
+target/
+out/
+.idea
+*.iml
+*.phd
+javacore.*.txt
+*.trc
