@@ -7,9 +7,8 @@ use std::time::Duration;
 
 #[async_std::main]
 async fn main() {
-    let mut count = 0;
-
-    let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap(); // set listen port
+    let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap(); // bind listener
+    let mut count = 0; // count used to introduce delays
 
     loop {
         count = count + 1;
