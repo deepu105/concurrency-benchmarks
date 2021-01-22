@@ -42,10 +42,12 @@ public class JavaAsyncHTTPServer {
     }
 
     private void handleAcceptConnection(final AsynchronousSocketChannel ch) {
+        var content = "Hello Java!";
         var message = ("HTTP/1.0 200 OK\n" +
                 "Connection: keep-alive\n" +
+                "Content-length: " + content.length() + "\n" +
                 "Content-Type: text/html; charset=utf-8\r\n\r\n" +
-                "Hello Hellow").getBytes();
+                content).getBytes();
         var buffer = ByteBuffer.wrap(message);
         ch.write(buffer);
         try {

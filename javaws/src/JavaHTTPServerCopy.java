@@ -2,15 +2,13 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class JavaHTTPServer {
+public class JavaHTTPServerCopy {
     public static void main(String[] args) {
-        var count = 0;
         int port = 8080;
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
             while (true) {
-                count++;
-                new ServerThread(serverSocket.accept(), count).start();
+                new ServerThreadCopy(serverSocket.accept()).start();
             }
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
@@ -18,16 +16,15 @@ public class JavaHTTPServer {
     }
 }
 
-class ServerThread extends Thread {
+class ServerThreadCopy extends Thread {
 
     private final Socket socket;
-    private final int count;
 
-    public ServerThread(Socket socket, int count) {
+    public ServerThreadCopy(Socket socket) {
         this.socket = socket;
-        this.count = count;
     }
 
+    @Override
     public void run() {
         var file = new File("hello.html");
         try (
@@ -37,15 +34,10 @@ class ServerThread extends Thread {
                 var dataOut = new BufferedOutputStream(socket.getOutputStream());
                 var fileIn = new FileInputStream(file)
         ) {
-            // add 2 second delay to every 10th request
-            if (count % 10 == 0) {
-                System.out.println("Adding delay. Count: " + count);
-                // Thread.sleep(2000);
-            }
             var fileLength = (int) file.length();
             var fileData = new byte[fileLength];
-            fileIn.read(fileData);
-
+            int read = fileIn.read(fileData);
+            System.out.println("Responding with Content-length: " + read);
             var contentMimeType = "text/html";
             // send HTTP Headers
             out.println("HTTP/1.1 200 OK");
