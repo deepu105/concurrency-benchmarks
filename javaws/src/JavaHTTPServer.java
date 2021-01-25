@@ -4,12 +4,13 @@ import java.net.Socket;
 
 public class JavaHTTPServer {
     public static void main(String[] args) {
-        var count = 0;
-        var port = 8080;
-        try (var serverSocket = new ServerSocket(port, 100)) {
-            System.out.println("Server is listening on port " + port);
+        var count = 0; // count used to introduce delays
+        // bind listener
+        try (var serverSocket = new ServerSocket(8080, 100)) {
+            System.out.println("Server is listening on port 8080");
             while (true) {
                 count++;
+                // listen to all incoming requests and spawn each connection in a new thread
                 new ServerThread(serverSocket.accept(), count).start();
             }
         } catch (IOException ex) {
@@ -32,8 +33,9 @@ class ServerThread extends Thread {
     public void run() {
         var file = new File("hello.html");
         try (
+                // get the input stream
                 var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                // we get character output stream to client (for headers)
+                // get character output stream to client (for headers)
                 var out = new PrintWriter(socket.getOutputStream());
                 // get binary output stream to client (for requested data)
                 var dataOut = new BufferedOutputStream(socket.getOutputStream());
@@ -45,7 +47,7 @@ class ServerThread extends Thread {
                 Thread.sleep(2000);
             }
 
-            // read the request fully to avoid connection reset errors and broken pipes
+            // read the request first to avoid connection reset errors
             while (true) {
                 String requestLine = in.readLine();
                 if (requestLine == null || requestLine.length() == 0) {
@@ -53,6 +55,7 @@ class ServerThread extends Thread {
                 }
             }
 
+            // read the HTML file
             var fileLength = (int) file.length();
             var fileData = new byte[fileLength];
             fileIn.read(fileData);
@@ -64,7 +67,7 @@ class ServerThread extends Thread {
             out.println("Content-length: " + fileLength);
             out.println("Connection: keep-alive");
 
-            out.println(); // blank line between headers and content, very important !
+            out.println(); // blank line between headers and content, very important!
             out.flush(); // flush character output stream buffer
 
             dataOut.write(fileData, 0, fileLength); // write the file data to output stream
