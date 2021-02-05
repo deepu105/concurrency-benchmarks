@@ -1,5 +1,7 @@
 const http = require("http");
 const fs = require("fs").promises;
+const cluster = require("cluster");
+const numCPUs = require("os").cpus().length;
 
 let count = 0;
 
@@ -12,10 +14,25 @@ const server = http.createServer((req, res) => {
 const host = "localhost";
 const port = 8080;
 
-// set listen port
-server.listen(port, host, () => {
-  console.log(`Server is running on http://${host}:${port}`);
-});
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+
+  // Fork workers.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  // set listen port, TCP connection is shared by all workers
+  server.listen(port, host, () => {
+    console.log(
+      `Worker ${process.pid}: Server is running on http://${host}:${port}`
+    );
+  });
+}
 
 const requestListener = async function (req, res, count) {
   // add 2 second delay to every 10th request
