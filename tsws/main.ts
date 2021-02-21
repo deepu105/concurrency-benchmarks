@@ -1,8 +1,13 @@
-import { listenAndServe } from "https://deno.land/std/http/server.ts";
+import {
+  listenAndServe,
+  ServerRequest,
+} from "https://deno.land/std/http/server.ts";
 
 let count = 0;
 
-listenAndServe({ hostname: "0.0.0.0", port: 8080 }, async (req) => {
+listenAndServe({ hostname: "0.0.0.0", port: 8080 }, handleRequest);
+
+async function handleRequest(req: ServerRequest) {
   count++;
   // add 2 second delay to every 10th request
   if (count % 10 === 0) {
@@ -18,7 +23,9 @@ listenAndServe({ hostname: "0.0.0.0", port: 8080 }, async (req) => {
   };
   res.headers.set("Connection", "keep-alive");
   req.respond(res);
-});
+}
+
+console.log(`HTTP webserver running at:  http://localhost:8080/`);
 
 function sleep(ms: number) {
   return new Promise((resolve) => {
