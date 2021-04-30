@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 
 public class JavaAsyncHTTPServer {
-
     public static void main(String[] args) throws Exception {
         new JavaAsyncHTTPServer().start();
         Thread.currentThread().join(); // Wait forever
@@ -20,8 +19,7 @@ public class JavaAsyncHTTPServer {
     private void start() throws IOException {
         // we shouldn't use try with resource here as it will kill the stream
         var server = AsynchronousServerSocketChannel.open();
-        var hostAddress = new InetSocketAddress("127.0.0.1", 8080);
-        server.bind(hostAddress, 100);   // bind listener
+        server.bind(new InetSocketAddress("127.0.0.1", 8080), 100); // bind listener
         server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
         System.out.println("Server is listening on port 8080");
 
