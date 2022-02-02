@@ -9,5 +9,5 @@ edition = "2018"
 [dependencies]
 
 [dependencies.async-std]
-version = "1.6"
+version = "1.10.0"
 features = ["attributes"]
