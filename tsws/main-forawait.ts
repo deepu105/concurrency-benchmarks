@@ -1,15 +1,8 @@
-import { serve, ServerRequest } from "https://deno.land/std/http/server.ts";
+import { serve } from "https://deno.land/std/http/server.ts";
 
 let count = 0;
 
-// set listen port
-const server = serve({ hostname: "0.0.0.0", port: 8080 });
-console.log(`HTTP webserver running at:  http://localhost:8080/`);
-
-// listen to all incoming requests
-for await (const request of server) handleRequest(request);
-
-async function handleRequest(request: ServerRequest) {
+const handleRequest = async (request: Request): Promise<Response> => {
   count++;
   // add 2 second delay to every 10th request
   if (count % 10 === 0) {
@@ -20,12 +13,11 @@ async function handleRequest(request: ServerRequest) {
   const body = await Deno.readTextFile("./hello.html");
   const res = {
     status: 200,
-    body,
     headers: new Headers(),
   };
   res.headers.set("Connection", "keep-alive");
-  request.respond(res); // send data to client side
-}
+  return new Response(body, res); // send data to client side
+};
 
 // sleep function since NodeJS doesn't provide one
 function sleep(ms: number) {
@@ -33,3 +25,7 @@ function sleep(ms: number) {
     setTimeout(resolve, ms);
   });
 }
+
+// set listen port and listen to all incoming requests
+await serve(handleRequest, { hostname: "0.0.0.0", port: 8080 });
+console.log(`HTTP webserver running at:  http://localhost:8080/`);

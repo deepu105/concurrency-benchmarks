@@ -4,6 +4,15 @@ This is the code samples used for my blog series https://deepu.tech/concurrency-
 
 The benchmarks were run using ApacheBench
 
+## Java
+
+```shell
+cd javaws && java src/JavaHTTPServer.java
+
+# in a new terminal
+ab -c 100 -n 10000 http://localhost:8080/
+```
+
 ## Go
 
 ```shell
@@ -34,7 +43,7 @@ ab -c 100 -n 10000 http://localhost:8080/
 ## TS
 
 ```shell
-cd tsws && deno run --allow-all main.ts
+cd tsws && deno run --allow-all main-forawait.ts
 
 # in a new terminal
 ab -c 100 -n 10000 http://localhost:8080/
