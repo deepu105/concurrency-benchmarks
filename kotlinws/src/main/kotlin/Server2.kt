@@ -1,36 +1,36 @@
 import java.io.*
 import java.net.ServerSocket
 import java.net.Socket
-import kotlin.concurrent.thread
 
-
-fun main(args: Array<String>) {
-    // count used to introduce delays
-    var count = 0
-    // bind listener
-    ServerSocket(8080, 100).use { server ->
-        println("Server is running on port ${server.localPort}")
-        while (true) {
-            count++
-            // Run client in it's own thread.
-            thread {
-                ClientHandler(server.accept(), count).run()
+object JavaHTTPServer {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        var count = 0 // count used to introduce delays
+        // bind listener
+        try {
+            ServerSocket(8080, 100).use { serverSocket ->
+                println("Server is listening on port 8080")
+                while (true) {
+                    count++
+                    // listen to all incoming requests and spawn each connection in a new thread
+                    ServerThread(serverSocket.accept(), count).start()
+                }
             }
+        } catch (ex: IOException) {
+            println("Server exception: " + ex.message)
         }
     }
 }
 
-class ClientHandler(private val socket: Socket, private val count: Int) {
-
+internal class ServerThread(private val socket: Socket, private val count: Int) : Thread() {
     private val file = File("hello.html")
-
-    fun run() {
+    override fun run() {
         try {
             BufferedReader(InputStreamReader(socket.getInputStream())).use { inp ->
                 // add 2 second delay to every 10th request
                 if (count % 10 == 0) {
                     println("Adding delay. Count: $count")
-                    Thread.sleep(2000)
+                    sleep(2000)
                 }
 
                 // read the request first to avoid connection reset errors
