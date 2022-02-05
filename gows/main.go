@@ -13,8 +13,7 @@ func main() {
 	var count int32 = 0
 	// set router
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		atomic.AddInt32(&count, 1)
-		handleConnection(w, count)
+		handleConnection(w, atomic.AddInt32(&count, 1))
 	})
 	// set listen port
 	err := http.ListenAndServe(":8080", nil)
