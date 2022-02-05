@@ -29,7 +29,11 @@ func handleConnection(w http.ResponseWriter, count int32) {
 		println("Adding delay. Count: ", count)
 		time.Sleep(2 * time.Second)
 	}
-	html, _ := ioutil.ReadFile("hello.html") // read html file
+	html, err := ioutil.ReadFile("hello.html") // read html file
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	w.Header().Add("Connection", "keep-alive")
 	w.WriteHeader(200)           // 200 OK
 	fmt.Fprintf(w, string(html)) // send data to client side
