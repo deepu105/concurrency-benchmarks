@@ -5,11 +5,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"sync/atomic"
 	"time"
 )
 
 func main() {
-	var count = 0
+	var count int32 = 0
 
 	l, err := net.Listen("tcp", "127.0.0.1:8080") // set listen port
 	if err != nil {
@@ -18,18 +19,17 @@ func main() {
 	defer l.Close() // close connection when done
 
 	for {
-		count++
 		// Listen for an incoming connection.
 		if conn, err := l.Accept(); err != nil {
 			log.Fatal("Error accepting: ", err)
 		} else {
 			// Handle connections in a new goroutine.
-			go handleConnection(conn, count)
+			go handleConnection(conn, atomic.AddInt32(&count, 1))
 		}
 	}
 }
 
-func handleConnection(conn net.Conn, count int) {
+func handleConnection(conn net.Conn, count int32) {
 	// Close the connection when you're done with it.
 	defer conn.Close()
 	// Read the incoming connection into a buffer.
