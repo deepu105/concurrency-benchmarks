@@ -2,7 +2,7 @@ use async_std::net::TcpListener;
 use async_std::net::TcpStream;
 use async_std::prelude::*;
 use async_std::task;
-use std::fs;
+use async_std::fs;
 use std::time::Duration;
 
 #[async_std::main]
@@ -36,7 +36,7 @@ Connection: keep-alive
 Content-Length: 174
 Content-Type: text/html; charset=utf-8
     ";
-    let contents = fs::read_to_string("hello.html").unwrap();
+    let contents = fs::read_to_string("hello.html").await.unwrap();
 
     let response = format!("{}\r\n\r\n{}", header, contents);
 
