@@ -12,7 +12,6 @@ func main() {
 	var count = 0
 	// set router
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
 		count++
 		handleConnection(w, count)
 	})
