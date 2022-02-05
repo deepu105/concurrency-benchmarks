@@ -23,8 +23,6 @@ public class JavaAsyncHTTPServer {
         server.setOption(StandardSocketOptions.SO_REUSEADDR, true);
         System.out.println("Server is listening on port 8080");
 
-        final int[] count = {0}; // count used to introduce delays
-
         // listen to all incoming requests
         server.accept(null, new CompletionHandler<>() {
             @Override
@@ -32,8 +30,7 @@ public class JavaAsyncHTTPServer {
                 if (server.isOpen()) {
                     server.accept(null, this);
                 }
-                count[0]++;
-                handleAcceptConnection(result, count[0]);
+                handleAcceptConnection(result);
             }
 
             @Override
@@ -46,14 +43,9 @@ public class JavaAsyncHTTPServer {
         });
     }
 
-    private void handleAcceptConnection(final AsynchronousSocketChannel ch, final int count) {
+    private void handleAcceptConnection(final AsynchronousSocketChannel ch) {
         var file = new File("hello.html");
         try (var fileIn = new FileInputStream(file)) {
-            // add 2 second delay to every 10th request
-            if (count % 10 == 0) {
-                System.out.println("Adding delay. Count: " + count);
-                Thread.sleep(2000);
-            }
             if (ch != null && ch.isOpen()) {
                 // Read the first 1024 bytes of data from the stream
                 final ByteBuffer buffer = ByteBuffer.allocate(1024);

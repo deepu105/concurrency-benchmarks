@@ -9,26 +9,18 @@ use tokio::{
 #[tokio::main()] // Tokio uses a threadpool sized for #cpus by default
 async fn main() {
     let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
-    let mut count = 0; // count used to introduce delays
 
     loop {
-        count = count + 1;
         let (socket, _) = listener.accept().await.unwrap();
         // Spawn a task in the tokio threadpool
-        tokio::spawn(async move { handle_connection(socket, Box::new(count)).await });
+        tokio::spawn(async move { handle_connection(socket).await });
     }
 }
 
-async fn handle_connection(mut stream: TcpStream, count: Box<i64>) {
+async fn handle_connection(mut stream: TcpStream) {
     // Read the first 1024 bytes of data from the stream
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).await.unwrap();
-
-    // add 2 second delay to every 10th request
-    if (*count % 10) == 0 {
-        println!("Adding delay. Count: {}", count);
-        sleep(Duration::from_secs(2)).await;
-    }
 
     let header = "
     HTTP/1.0 200 OK

@@ -1,14 +1,6 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 
-let count = 0;
-
 const handleRequest = async (request: Request): Promise<Response> => {
-  count++;
-  // add 2 second delay to every 10th request
-  if (count % 10 === 0) {
-    console.log("Adding delay. Count: ", count);
-    await sleep(2000);
-  }
   // read html file
   const body = await Deno.readTextFile("./hello.html");
   const res = {

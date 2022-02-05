@@ -8,27 +8,19 @@ use std::time::Duration;
 #[async_std::main]
 async fn main() {
     let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap(); // bind listener
-    let mut count = 0; // count used to introduce delays
 
     loop {
-        count = count + 1;
         // Listen for an incoming connection.
         let (stream, _) = listener.accept().await.unwrap();
         // spawn a new task to handle the connection
-        task::spawn(handle_connection(stream, count));
+        task::spawn(handle_connection(stream));
     }
 }
 
-async fn handle_connection(mut stream: TcpStream, count: i64) {
+async fn handle_connection(mut stream: TcpStream) {
     // Read the first 1024 bytes of data from the stream
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).await.unwrap();
-
-    // add 2 second delay to every 10th request
-    if (count % 10) == 0 {
-        println!("Adding delay. Count: {}", count);
-        task::sleep(Duration::from_secs(2)).await;
-    }
 
     let header = "
 HTTP/1.0 200 OK

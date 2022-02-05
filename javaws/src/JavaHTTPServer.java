@@ -4,14 +4,12 @@ import java.net.Socket;
 
 public class JavaHTTPServer {
     public static void main(String[] args) {
-        var count = 0; // count used to introduce delays
         // bind listener
         try (var serverSocket = new ServerSocket(8080, 100)) {
             System.out.println("Server is listening on port 8080");
             while (true) {
-                count++;
                 // listen to all incoming requests and spawn each connection in a new thread
-                new ServerThread(serverSocket.accept(), count).start();
+                new ServerThread(serverSocket.accept()).start();
             }
         } catch (IOException ex) {
             System.out.println("Server exception: " + ex.getMessage());
@@ -22,11 +20,9 @@ public class JavaHTTPServer {
 class ServerThread extends Thread {
 
     private final Socket socket;
-    private final int count;
 
-    public ServerThread(Socket socket, int count) {
+    public ServerThread(Socket socket) {
         this.socket = socket;
-        this.count = count;
     }
 
     @Override
@@ -41,12 +37,6 @@ class ServerThread extends Thread {
                 var dataOut = new BufferedOutputStream(socket.getOutputStream());
                 var fileIn = new FileInputStream(file)
         ) {
-            // add 2 second delay to every 10th request
-            if (count % 10 == 0) {
-                System.out.println("Adding delay. Count: " + count);
-                Thread.sleep(2000);
-            }
-
             // read the request first to avoid connection reset errors
             while (true) {
                 String requestLine = in.readLine();

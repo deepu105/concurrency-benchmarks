@@ -13,31 +13,22 @@ fn main() {
     let mut pool_builder = ThreadPoolBuilder::new();
     pool_builder.pool_size(100);
     let pool = pool_builder.create().expect("couldn't create threadpool");
-    let mut count = 0; // count used to introduce delays
 
     // Listen for an incoming connection.
     for stream in listener.incoming() {
         let stream = stream.unwrap();
-        count = count + 1;
-        let count_n = Box::new(count);
 
         // spawning each connection in a new thread asynchronously
         pool.spawn_ok(async {
-            handle_connection(stream, count_n).await;
+            handle_connection(stream).await;
         });
     }
 }
 
-async fn handle_connection(mut stream: TcpStream, count: Box<i64>) {
+async fn handle_connection(mut stream: TcpStream) {
     // Read the first 1024 bytes of data from the stream
     let mut buffer = [0; 1024];
     stream.read(&mut buffer).unwrap();
-
-    // add 2 second delay to every 10th request
-    if (*count % 10) == 0 {
-        println!("Adding delay. Count: {}", count);
-        thread::sleep(Duration::from_secs(2));
-    }
 
     let header = "
     HTTP/1.0 200 OK
