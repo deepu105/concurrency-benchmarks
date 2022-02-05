@@ -5,14 +5,15 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync/atomic"
 	"time"
 )
 
 func main() {
-	var count = 0
+	var count int32 = 0
 	// set router
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		count++
+		atomic.AddInt32(&count, 1)
 		handleConnection(w, count)
 	})
 	// set listen port
@@ -22,7 +23,7 @@ func main() {
 	}
 }
 
-func handleConnection(w http.ResponseWriter, count int) {
+func handleConnection(w http.ResponseWriter, count int32) {
 	// add 2 second delay to every 10th request
 	if (count % 10) == 0 {
 		println("Adding delay. Count: ", count)
