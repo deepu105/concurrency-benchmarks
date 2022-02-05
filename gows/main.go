@@ -34,7 +34,6 @@ func handleConnection(w http.ResponseWriter, count int32) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.Header().Add("Connection", "keep-alive")
 	w.WriteHeader(200)           // 200 OK
 	fmt.Fprintf(w, string(html)) // send data to client side
 }
