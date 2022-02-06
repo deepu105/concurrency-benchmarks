@@ -21,7 +21,6 @@ async fn handle_connection(mut stream: TcpStream) {
     stream.read(&mut buffer).await.unwrap();
 
     let header = "
-    HTTP/1.0 200 OK
     Connection: keep-alive
     Content-Length: 174
     Content-Type: text/html; charset=utf-8
@@ -29,7 +28,7 @@ async fn handle_connection(mut stream: TcpStream) {
 
     let contents = read_to_string("hello.html").await.unwrap();
 
-    let response = format!("{}\r\n\r\n{}", header, contents);
+    let response = format!("HTTP/1.1 200 OK\r\n{}\r\n\r\n{}", header, contents);
 
     stream.write_all(response.as_bytes()).await.unwrap(); // write response
 }

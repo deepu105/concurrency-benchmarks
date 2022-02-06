@@ -58,7 +58,7 @@ public class JavaAsyncHTTPServer {
                 fileIn.read(fileData);
 
                 // send HTTP Headers
-                var message = ("HTTP/1.1 200 OK\n" +
+                var message = ("HTTP/1.1 200 OK\r\n" +
                         "Connection: keep-alive\n" +
                         "Content-length: " + fileLength + "\n" +
                         "Content-Type: text/html; charset=utf-8\r\n\r\n" +
