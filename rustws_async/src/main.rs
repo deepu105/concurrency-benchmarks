@@ -3,7 +3,6 @@ use async_std::net::TcpStream;
 use async_std::prelude::*;
 use async_std::task;
 use async_std::fs;
-use std::time::Duration;
 
 #[async_std::main]
 async fn main() {

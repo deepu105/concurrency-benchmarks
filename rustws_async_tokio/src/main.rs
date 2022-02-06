@@ -1,9 +1,7 @@
-use std::time::Duration;
 use tokio::{
     fs::read_to_string,
     io::{AsyncReadExt, AsyncWriteExt},
     net::{TcpListener, TcpStream},
-    time::sleep,
 };
 
 #[tokio::main()] // Tokio uses a threadpool sized for #cpus by default
