@@ -31,7 +31,7 @@ func handleConnection(conn net.Conn) {
 	// Read the incoming connection into a buffer.
 	buf := make([]byte, 1024)
 	if _, err := conn.Read(buf); err != nil {
-		log.Fatal("Error reading:", err)
+		log.Print("Error reading:", err)
 	}
 
 	html, _ := ioutil.ReadFile("hello.html") // read html file
