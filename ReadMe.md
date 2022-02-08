@@ -11,53 +11,66 @@ Previously the benchmarks were run using ApacheBench
 ## Java
 
 ```shell
+# multi-thread version
 cd javaws && java src/JavaHTTPServer.java
 
-# in a new terminal
-ab -c 100 -n 10000 http://localhost:8080/
+# Java Async version
+cd javaws && java src/JavaAsyncHTTPServer.java
+
+# Java Undertow version
+cd java_undertow && mvn clean install && java -jar target/hello-java-1.0.0-SNAPSHOT.jar
 ```
 
 ## Go
 
 ```shell
+# HTTP server
 cd gows && go run main.go
 
-# in a new terminal
-ab -c 100 -n 10000 http://localhost:8080/
+# TCP version
+cd gows_tcp && go run main.go
 ```
 
 ## Rust
 
 ```shell
+# multi-thread version
+cd rustws && cargo run --release
+
+# async version
 cd rustws_async && cargo run --release
 
-# in a new terminal
-ab -c 100 -n 10000 http://localhost:8080/
+# async thread version
+cd rustws_async_thread && cargo run --release
+
+# async tokio version
+cd rustws_async_tokio && cargo run --release
+
+# async actix-web version
+cd rust_actixweb && cargo run --release
 ```
 
 ## JS
 
 ```shell
+# async version
 cd jsws && node main.js
 
-# in a new terminal
-ab -c 100 -n 10000 http://localhost:8080/
+# multi-thread version
+cd jsws_thread && node main.js
+
 ```
 
 ## TS
 
 ```shell
+# async version
 cd tsws && deno run --allow-all main.ts
-
-# in a new terminal
-ab -c 100 -n 10000 http://localhost:8080/
 ```
 
 ## .NET
 
 ```shell
+# async version
 cd dotnetws && dotnet run
-
-# in a new terminal
-ab -c 100 -n 10000 http://localhost:8080/
 ```
