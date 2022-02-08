@@ -2,7 +2,11 @@
 
 This is the code samples used for my blog series https://deepu.tech/concurrency-in-modern-languages/
 
-The benchmarks were run using ApacheBench
+The benchmarks are run using [wrk](https://github.com/wg/wrk) and [drill](https://github.com/fcsonline/drill).
+
+Scripts and benchmark results can be found in the results/nosleep folder
+
+Previously the benchmarks were run using ApacheBench
 
 ## Java
 
