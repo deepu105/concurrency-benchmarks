@@ -48,3 +48,12 @@ cd tsws && deno run --allow-all main.ts
 # in a new terminal
 ab -c 100 -n 10000 http://localhost:8080/
 ```
+
+## .NET
+
+```shell
+cd dotnetws && dotnet run
+
+# in a new terminal
+ab -c 100 -n 10000 http://localhost:8080/
+```
