@@ -128,23 +128,24 @@ Base URL http://localhost:8080
 
 
 Fetch base                Total requests            1000000
-Fetch base                Successful requests       565
-Fetch base                Failed requests           999435
+Fetch base                Successful requests       998171
+Fetch base                Failed requests           1829
 Fetch base                Median time per request   11ms
 Fetch base                Average time per request  11ms
-Fetch base                Sample standard deviation 14ms
+Fetch base                Sample standard deviation 10ms
 
-Time taken for tests      25.2 seconds
+Time taken for tests      16.5 seconds
 Total requests            1000000
-Successful requests       565
-Failed requests           999435
-Requests per second       39760.76 [#/sec]
+Successful requests       998171
+Failed requests           1829
+Requests per second       60512.15 [#/sec]
 Median time per request   11ms
 Average time per request  11ms
-Sample standard deviation 14ms
+Sample standard deviation 10ms
 ```
 
-0:31.70 real, 13.88s user, 8.20s sys, 69%? cpu, 0 amem, 88352 mmem
+11.29user 10.32system 0:32.62elapsed 66%CPU (0avgtext+0avgdata 80792maxresident)k
+0inputs+8outputs (4major+40121minor)pagefaults 0swaps
 
 ## gows-tcp
 
@@ -314,3 +315,90 @@ Sample standard deviation 32ms
 ```
 
 0:40.56 real, 21.18s user, 11.73s sys, 81%? cpu, 0 amem, 116280 mmem
+
+## rustws-actixweb
+
+```
+Concurrency 2000
+Iterations 1000000
+Rampup 2
+Base URL http://localhost:8080
+
+
+Fetch base                Total requests            1000000
+Fetch base                Successful requests       998146
+Fetch base                Failed requests           1854
+Fetch base                Median time per request   9ms
+Fetch base                Average time per request  10ms
+Fetch base                Sample standard deviation 48ms
+
+Time taken for tests      14.6 seconds
+Total requests            1000000
+Successful requests       998146
+Failed requests           1854
+Requests per second       68547.83 [#/sec]
+Median time per request   9ms
+Average time per request  10ms
+Sample standard deviation 48ms
+```
+
+4.82user 7.05system 0:33.58elapsed 35%CPU (0avgtext+0avgdata 44960maxresident)k
+0inputs+0outputs (0major+17771minor)pagefaults 0swaps
+
+## javaws-undertow
+
+```
+Concurrency 2000
+Iterations 1000000
+Rampup 2
+Base URL http://localhost:8080
+
+
+Fetch base                Total requests            1000000
+Fetch base                Successful requests       997043
+Fetch base                Failed requests           2957
+Fetch base                Median time per request   10ms
+Fetch base                Average time per request  10ms
+Fetch base                Sample standard deviation 4ms
+
+Time taken for tests      15.5 seconds
+Total requests            1000000
+Successful requests       997043
+Failed requests           2957
+Requests per second       64716.79 [#/sec]
+Median time per request   10ms
+Average time per request  10ms
+Sample standard deviation 4ms
+```
+
+6.79user 7.66system 0:36.59elapsed 39%CPU (0avgtext+0vgdata 710548maxresident)k
+0inputs+0outputs (0major+177742minor)pagefaults 0swaps
+
+## dotnet
+
+```
+Concurrency 2000
+Iterations 1000000
+Rampup 2
+Base URL http://localhost:8080
+
+
+Fetch base                Total requests            1000000
+Fetch base                Successful requests       996826
+Fetch base                Failed requests           3174
+Fetch base                Median time per request   17ms
+Fetch base                Average time per request  18ms
+Fetch base                Sample standard deviation 5ms
+
+Time taken for tests      26.2 seconds
+Total requests            1000000
+Successful requests       996826
+Failed requests           3174
+Requests per second       38141.64 [#/sec]
+Median time per request   17ms
+Average time per request  18ms
+Sample standard deviation 5ms
+```
+
+64.94user 43.47system 0:32.66elapsed 331%CPU (0avgtext+0avgdata 455588maxresident)k
+0inputs+8outputs (1major+130364minor)pagefaults 0swaps

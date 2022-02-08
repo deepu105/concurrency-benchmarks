@@ -76,14 +76,15 @@ Transfer/sec:     30.80MB
 Running 30s test @ http://127.0.0.1:8080
   8 threads and 500 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     1.76ms    2.20ms  48.16ms   85.64%
-    Req/Sec    54.73k     7.36k  190.63k    72.34%
-  13074709 requests in 30.10s, 3.54GB read
-Requests/sec: 434398.86
-Transfer/sec:    120.55MB
+    Latency     1.24ms    1.13ms  27.64ms   85.19%
+    Req/Sec    56.54k     3.24k   75.13k    63.50%
+  13502707 requests in 30.01s, 1.52GB read
+Requests/sec: 449928.66
+Transfer/sec:     51.92MB
 ```
 
-0:43.72 real, 197.62s user, 120.95s sys, 728%? cpu, 0 amem, 88888 mmem
+102.74user 84.25system 0:52.82elapsed 354%CPU (0avgtext+0avgdata 80460maxresident)k
+192inputs+256outputs (5major+68290minor)pagefaults 0swaps
 
 ## gows-tcp
 
@@ -179,3 +180,51 @@ Transfer/sec:      9.65MB
 ```
 
 0:39.50 real, 26.85s user, 16.68s sys, 110%? cpu, 0 amem, 104132 mmem
+
+## rustws-actixweb
+
+```
+Running 30s test @ http://127.0.0.1:8080
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   644.09us  359.35us  33.75ms   99.42%
+    Req/Sec    97.21k     5.03k  114.82k    65.04%
+  23212163 requests in 30.02s, 1.73GB read
+Requests/sec: 773286.63
+Transfer/sec:     59.00MB
+```
+
+69.68user 111.18system 1:33.94elapsed 192%CPU (0avgtext+0avgdata 420620maxresident)k
+0inputs+25344outputs (0major+208570minor)pagefaults 0swaps
+
+## javaws-undertow
+
+```
+Running 30s test @ http://127.0.0.1:8080
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   716.54us    1.53ms  68.55ms   98.87%
+    Req/Sec    99.75k    11.73k  125.95k    85.67%
+  23822173 requests in 30.02s, 2.86GB read
+Requests/sec: 793456.47
+Transfer/sec:     97.61MB
+```
+
+51.23user 113.95system 1:15.60elapsed 218%CPU (0avgtext+0avgdata 706944maxresident)k
+0inputs+0outputs (0major+176746minor)pagefaults 0swaps
+
+## dotnet
+
+```
+Running 30s test @ http://127.0.0.1:8080
+  8 threads and 500 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     1.28ms    1.18ms  51.33ms   98.25%
+    Req/Sec    50.88k     3.42k   55.13k    96.21%
+  12150853 requests in 30.02s, 1.38GB read
+Requests/sec: 404750.49
+Transfer/sec:     47.09MB
+```
+
+106.67user 81.16system 0:55.43elapsed 338%CPU (0avgtext+0avgdata 195416maxresident)k
+0inputs+584outputs (12major+87136minor)pagefaults 0swaps
