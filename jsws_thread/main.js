@@ -1,5 +1,4 @@
 const http = require("http");
-const fs = require("fs").promises;
 const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
 
@@ -32,8 +31,7 @@ if (cluster.isMaster) {
 }
 
 const requestListener = async function (req, res) {
-  const contents = await fs.readFile(__dirname + "/hello.html"); // read html file
   res.setHeader("Connection", "keep-alive");
   res.writeHead(200); // 200 OK
-  res.end(contents); // send data to client side
+  res.end("Hello"); // send data to client side
 };

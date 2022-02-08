@@ -23,12 +23,10 @@ async fn handle_connection(mut stream: TcpStream) {
 
     let header = "
 Connection: keep-alive
-Content-Length: 174
+Content-Length: 5
 Content-Type: text/html; charset=utf-8
     ";
-    let contents = fs::read_to_string("hello.html").await.unwrap();
-
-    let response = format!("HTTP/1.1 200 OK\r\n{}\r\n\r\n{}", header, contents);
+    let response = format!("HTTP/1.1 200 OK\r\n{}\r\n\r\n{}", header, "Hello");
 
     stream.write(response.as_bytes()).await.unwrap(); // write response
     stream.flush().await.unwrap();

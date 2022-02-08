@@ -44,25 +44,19 @@ public class JavaAsyncHTTPServer {
     }
 
     private void handleAcceptConnection(final AsynchronousSocketChannel ch) {
-        var file = new File("hello.html");
-        try (var fileIn = new FileInputStream(file)) {
+        try {
             if (ch != null && ch.isOpen()) {
                 // Read the first 1024 bytes of data from the stream
                 final ByteBuffer buffer = ByteBuffer.allocate(1024);
                 // read the request fully to avoid connection reset errors
                 ch.read(buffer).get();
 
-                // read the HTML file
-                var fileLength = (int) file.length();
-                var fileData = new byte[fileLength];
-                fileIn.read(fileData);
-
                 // send HTTP Headers
                 var message = ("HTTP/1.1 200 OK\r\n" +
                         "Connection: keep-alive\n" +
-                        "Content-length: " + fileLength + "\n" +
+                        "Content-length: 5\n" +
                         "Content-Type: text/html; charset=utf-8\r\n\r\n" +
-                        new String(fileData, StandardCharsets.UTF_8)
+                        "Hello"
                 ).getBytes();
 
                 // write the to output stream

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -20,11 +19,6 @@ func main() {
 }
 
 func handleConnection(w http.ResponseWriter) {
-	html, err := ioutil.ReadFile("hello.html") // read html file
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.WriteHeader(200)           // 200 OK
-	fmt.Fprintf(w, string(html)) // send data to client side
+	w.WriteHeader(200)      // 200 OK
+	fmt.Fprintf(w, "Hello") // send data to client side
 }

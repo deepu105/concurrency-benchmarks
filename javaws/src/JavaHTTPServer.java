@@ -27,15 +27,11 @@ class ServerThread extends Thread {
 
     @Override
     public void run() {
-        var file = new File("hello.html");
         try (
                 // get the input stream
                 var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 // get character output stream to client (for headers)
                 var out = new PrintWriter(socket.getOutputStream());
-                // get binary output stream to client (for requested data)
-                var dataOut = new BufferedOutputStream(socket.getOutputStream());
-                var fileIn = new FileInputStream(file)
         ) {
             // read the request first to avoid connection reset errors
             while (true) {
@@ -45,23 +41,19 @@ class ServerThread extends Thread {
                 }
             }
 
-            // read the HTML file
-            var fileLength = (int) file.length();
-            var fileData = new byte[fileLength];
-            fileIn.read(fileData);
+            var data = "Hello";
 
             var contentMimeType = "text/html";
             // send HTTP Headers
             out.println("HTTP/1.1 200 OK");
             out.println("Content-type: " + contentMimeType);
-            out.println("Content-length: " + fileLength);
+            out.println("Content-length: " + data.length());
             out.println("Connection: keep-alive");
 
             out.println(); // blank line between headers and content, very important!
+            out.println(data);
             out.flush(); // flush character output stream buffer
 
-            dataOut.write(fileData, 0, fileLength); // write the file data to output stream
-            dataOut.flush();
         } catch (Exception ex) {
             System.err.println("Error with exception : " + ex);
         }
